@@ -1,4 +1,4 @@
-import winston, { format } from "winston";
+import winston from "winston";
 
 const logger = winston.createLogger({
   // creating a logger
