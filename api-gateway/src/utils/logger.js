@@ -11,7 +11,7 @@ const logger = winston.createLogger({
 		winston.format.splat(), // splat method is used for the enable message templates
 		winston.format.json(), // json formate logging
 	),
-	defaultMeta: { service: "identity-service" }, // what is what it is will logged
+	defaultMeta: { service: "api-gateway" }, // what is what it is will logged
 
 	// these transpors is used to define the output desination of our loggings
 	transports: [
