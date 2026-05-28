@@ -6,6 +6,7 @@ import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import Redis from "ioredis";
 import { RedisStore } from "rate-limit-redis";
+import validateToken from "./middlewares/auth-middleware.js";
 import errorHandler from "./middlewares/errorhandler.js";
 import logger from "./utils/logger.js";
 dotenv.config();
@@ -76,6 +77,25 @@ app.use(
 				`Response recived from idenity service : ${proxyRes.statusCode}`,
 			);
 
+			return proxyResData;
+		},
+	}),
+);
+
+// setting proxy for the post-service
+app.use(
+	"/v1/posts",
+	validateToken,
+	proxy(process.env.POST_SERVICE_URL, {
+		...proxyOptions,
+		proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+			proxyReqOpts.headers["Content-Type"] = "application/json";
+			proxyReqOpts.headers["x-user-id"] = srcReq.user.userId;
+
+			return proxyReqOpts;
+		},
+		userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
+			logger.info(`Response from post service : ${proxyRes.statusCode}`);
 			return proxyResData;
 		},
 	}),
