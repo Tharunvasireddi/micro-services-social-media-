@@ -11,6 +11,7 @@ import { RedisStore } from "rate-limit-redis";
 import errorHandler from "./middlewares/error-handler.js";
 import postRouter from "./routes/post-routes.js";
 import logger from "./utils/logger.js";
+import connectRabbitMq from "./utils/rabbitmq.js";
 const app = express();
 
 const port = process.env.PORT || 3002;
@@ -57,9 +58,19 @@ app.use(
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-	logger.info(`post service running on port ${port}`);
-});
+async function startServer() {
+	try {
+		app.listen(port, () => {
+			logger.info(`post service running on port ${port}`);
+		});
+		await connectRabbitMq();
+	} catch (error) {
+		logger.error("error while starting the server ");
+		process.exit(1);
+	}
+}
+
+startServer();
 
 // unhandles  promise rejection
 process.on("unhandledRejection", (reason, promise) => {
