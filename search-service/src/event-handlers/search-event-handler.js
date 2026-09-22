@@ -1,5 +1,5 @@
-import Search from "../models/SearchPost";
-import logger from "../utils/logger";
+import Search from "../models/SearchPost.js";
+import logger from "../utils/logger.js";
 
 async function handlePostCreatetd(event) {
 	try {

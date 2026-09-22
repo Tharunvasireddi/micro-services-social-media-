@@ -1,5 +1,5 @@
 import Media from "../models/Media.js";
-import uploadToCloudinary from "../utils/cloudinary.js";
+import { uploadToCloudinary } from "../utils/cloudinary.js";
 import logger from "../utils/logger.js";
 const uploadMediaController = async (req, res) => {
 	logger.info("Starting media upload");
@@ -58,4 +58,4 @@ const getAllMediaController = async (req, res) => {
 	}
 };
 
-export { uploadMediaController, getAllMediaController };
+export { getAllMediaController, uploadMediaController };

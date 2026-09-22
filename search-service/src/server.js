@@ -1,12 +1,16 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import helmet from "helmet";
 import mongoose from "mongoose";
-import { handlePostCreatetd } from "./event-handlers/search-event-handler";
-import errorHandler from "./middlewares/error-handler";
-import searchRouter from "./routes/searchpost-route";
-import logger from "./utils/logger";
-import { connectToRabbitMQ, consumeEvent } from "./utils/rabbitMq";
+import {
+	handlePostCreatetd,
+	handlePostDeleted,
+} from "./event-handlers/search-event-handler.js";
+import errorHandler from "./middlewares/error-handler.js";
+import searchRouter from "./routes/searchpost-route.js";
+import logger from "./utils/logger.js";
+import { connectToRabbitMQ, consumeEvent } from "./utils/rabbitMq.js";
 dotenv.config();
 
 const app = express();
@@ -38,11 +42,11 @@ async function startServer() {
 		// consume all the events
 		await consumeEvent("post.created", handlePostCreatetd);
 		await consumeEvent("post.deleted", handlePostDeleted);
-		app.listen(PORT, () => {
-			logger.info(`media- service running on port ${PORT}`);
+		app.listen(port, () => {
+			logger.info(`media- service running on port ${port}`);
 		});
 	} catch (error) {
-		logger.error("failed tp start serch service");
+		logger.error("failed tp start serch service", error);
 		process.exit(1);
 	}
 }

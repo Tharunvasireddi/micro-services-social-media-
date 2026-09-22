@@ -1,4 +1,4 @@
-import Search from "../models/SearchPost";
+import Search from "../models/SearchPost.js";
 
 const searchPostController = async (req, res) => {
 	logger.info("search endpoint hit..");

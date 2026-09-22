@@ -91,7 +91,6 @@ app.use(
 		proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
 			proxyReqOpts.headers["Content-Type"] = "application/json";
 			proxyReqOpts.headers["x-user-id"] = srcReq.user.userId;
-
 			return proxyReqOpts;
 		},
 		userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
